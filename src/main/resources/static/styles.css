@@ -577,6 +577,38 @@ footer {
   width: 100%;
 }
 
+/* Difficulty Filter Styles */
+.difficulty-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 100%;
+}
+
+.difficulty-filter {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.difficulty-filter.active {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary-dark);
+}
+
+.difficulty-filter:not(.active):hover {
+  background-color: var(--primary-light);
+  color: white;
+}
+
 .reset-button {
   background-color: var(--border);
   color: var(--text-primary);
