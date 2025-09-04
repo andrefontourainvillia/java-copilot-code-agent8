@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentação do Sistema
+    url: https://github.com/andrefontourainvillia/java-copilot-code-agent8/blob/main/README.md
+    about: Consulte a documentação para informações gerais sobre o sistema
+  - name: 🎓 Guia de Arquitetura
+    url: https://github.com/andrefontourainvillia/java-copilot-code-agent8/blob/main/.github/copilot-instructions.md
+    about: Informações técnicas detalhadas sobre a arquitetura do sistema
+  - name: 🚀 GitHub Copilot
+    url: https://docs.github.com/en/copilot
+    about: Documentação oficial do GitHub Copilot para desenvolvedores
