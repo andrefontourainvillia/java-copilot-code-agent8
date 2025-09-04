@@ -27,6 +27,7 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 │   │   ├── ActivityRepository.java
 │   │   └── TeacherRepository.java
 │   └── valueobjects/         # Objetos de valor
+│       ├── ActivityType.java   # Enum de tipos de atividade
 │       ├── Email.java        # Validação de email
 │       └── ScheduleDetails.java # Detalhes de horário
 ├── application/              # 🔧 Camada de Aplicação
@@ -36,11 +37,13 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 │   │   └── TeacherDTO.java
 │   └── usecases/             # Casos de uso
 │       ├── ActivityUseCase.java
+│       ├── AuthenticationUseCase.java
 │       └── StudentRegistrationUseCase.java
 ├── infrastructure/           # 🏭 Camada de Infraestrutura
 │   ├── config/               # Configurações
 │   ├── migrations/           # Migrações do banco
-│   │   └── V001_InitialDatabaseSetup.java
+│   │   ├── V001_InitialDatabaseSetup.java
+│   │   └── V002_AddMangaManiacsClub.java
 │   └── persistence/          # Implementações de repositório
 │       ├── ActivityRepositoryImpl.java
 │       ├── MongoActivityRepository.java
@@ -48,7 +51,9 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 │       └── TeacherRepositoryImpl.java
 └── presentation/             # 🎨 Camada de Apresentação
     ├── controllers/          # Controllers REST
-    │   └── ActivityController.java
+    │   ├── ActivityController.java
+    │   ├── AuthController.java
+    │   └── StaticController.java
     └── mappers/              # Mapeadores DTO ↔ Entity
         ├── ActivityMapper.java
         └── TeacherMapper.java
@@ -89,20 +94,23 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 ### 🎓 Gestão de Atividades
 
 - **Listagem de atividades** com filtros por:
-  - Dia da semana
+  - Busca textual por nome
+  - Dia da semana (Segunda a Domingo)
   - Horário (manhã, tarde, fim de semana)
-  - Categoria (esportes, artes, acadêmico, etc.)
+  - Categoria (Esportes, Artes, Acadêmica, Comunidade, Tecnologia)
 - **Detalhes de atividades**:
-  - Nome e descrição
+  - Nome e descrição completa
   - Horários e dias da semana
   - Capacidade máxima
   - Lista de participantes
 
 ### 👨‍🏫 Sistema de Autenticação
 
-- **Login de professores** com username/senha
+- **Login de professores** com username/senha via `/auth/login`
+- **Verificação de sessão** via `/auth/check-session`
 - **Controle de acesso** baseado em roles (TEACHER/ADMIN)
-- **Autenticação requerida** para inscrições
+- **Autenticação requerida** para inscrições e gestão de atividades
+- **Usernames disponíveis**: `principal`, `mrodriguez`, `mchen`
 
 ### 📝 Gestão de Inscrições
 
@@ -115,10 +123,16 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 
 ### 🎨 Interface Web
 
-- **Design responsivo** e intuitivo
-- **Filtros dinâmicos** para busca de atividades
-- **Modais** para login e inscrições
+- **Design responsivo** e intuitivo em português
+- **Filtros dinâmicos** para busca de atividades por:
+  - Busca textual
+  - Categoria (Esportes, Artes, Acadêmica, Comunidade, Tecnologia)
+  - Dia da semana (Segunda a Domingo)
+  - Horário (Manhã, Tarde, Fim de semana)
+- **Sistema de autenticação** com modal de login
+- **Modais** para login e inscrições de estudantes
 - **Feedback visual** para ações do usuário
+- **Exibição de participantes** por atividade
 
 ## 🔧 Configuração e Execução
 
@@ -186,12 +200,23 @@ GET /activities/days
 POST /activities/{activityName}/signup
 Content-Type: application/x-www-form-urlencoded
 
-email=student@mergington.edu&teacher_username=teacher1
+email=student@mergington.edu&teacher_username=mrodriguez
 
 POST /activities/{activityName}/unregister
 Content-Type: application/x-www-form-urlencoded
 
-email=student@mergington.edu&teacher_username=teacher1
+email=student@mergington.edu&teacher_username=mrodriguez
+```
+
+#### Autenticação
+
+```http
+POST /auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=mrodriguez&password=art123
+
+GET /auth/check-session?username=mrodriguez
 ```
 
 ## 🧪 Testes
@@ -225,15 +250,26 @@ O sistema utiliza **Mongock** para realizar migrações automáticas do banco de
 
 ### Professores Padrão
 
-- **admin** - Administrador principal
-- **teacher.rodriguez** - Professor de artes
-- **teacher.chen** - Professor de xadrez
+- **principal** - Diretor Martinez (Administrador)
+- **mrodriguez** - Sr. Rodriguez (Professor)
+- **mchen** - Sra. Chen (Professor)
 
 ### Atividades Exemplo
 
-- **Art Club** - Terças e quintas, 15:30-17:00
-- **Chess Club** - Segundas e quartas, 15:30-17:00
-- **Drama Club** - Quartas e sextas, 16:00-18:00
+- **Clube de Xadrez** - Segundas e sextas, 15:15-16:45
+- **Aula de Programação** - Terças e quintas, 07:00-08:00
+- **Clube de Arte** - Quintas, 15:15-17:00
+- **Clube de Teatro** - Segundas e quartas, 15:30-17:30
+- **Time de Futebol** - Terças e quintas, 15:30-17:30
+- **Time de Basquete** - Quartas e sextas, 15:15-17:00
+- **Manga Maniacs** - Terças, 19:00-20:30 (Clube de mangás)
+- **Fitness Matinal** - Segundas, quartas e sextas, 06:30-07:45
+- **Clube de Matemática** - Terças, 07:15-08:00
+- **Equipe de Debates** - Sextas, 15:30-17:30
+- **Oficina de Robótica** - Sábados, 10:00-14:00
+- **Olimpíada de Ciências** - Sábados, 13:00-16:00
+- **Torneio de Xadrez** - Domingos, 14:00-17:00
+- **Serviço Comunitário** - Sábados, 09:00-12:00
 
 ## 🔒 Segurança
 
