@@ -78,7 +78,7 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 
 ### Ferramentas de Desenvolvimento
 
-- **Maven** - Gerenciamento de dependências
+- **Gradle** - Gerenciamento de dependências e build
 - **JUnit 5** - Testes unitários
 - **Mockito** - Mocks para testes
 - **Testcontainers** - Testes de integração
@@ -125,7 +125,7 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 ### Pré-requisitos
 
 - Java 21
-- Maven 3.8+
+- Gradle 8.11+ (ou use o wrapper incluído)
 - MongoDB 4.4+
 
 ### Variáveis de Ambiente
@@ -148,25 +148,25 @@ Crie um arquivo `.env` baseado no `.env.example`
 
    ```bash
    # Compilar o projeto
-   mvn clean compile
+   ./gradlew clean compileJava
    
    # Executar os testes
-   mvn test
+   ./gradlew test
    
    # Iniciar a aplicação
-   mvn spring-boot:run
+   ./gradlew bootRun
    ```
 
 3. **Acessar a aplicação**:
    - Frontend: <http://localhost:8080>
    - API REST: <http://localhost:8080/activities>
 
-### Tasks Maven Disponíveis
+### Tasks Gradle Disponíveis
 
-- `mvn clean install` - Build completo
-- `mvn test` - Executar testes
-- `mvn spring-boot:run` - Iniciar aplicação
-- `mvn package -DskipTests` - Gerar JAR
+- `./gradlew clean build` - Build completo
+- `./gradlew test` - Executar testes
+- `./gradlew bootRun` - Iniciar aplicação
+- `./gradlew bootJar` - Gerar JAR executável
 
 ## 🌐 API REST
 
@@ -209,14 +209,14 @@ src/test/java/
 
 ```bash
 # Todos os testes
-mvn test
+./gradlew test
 
 # Testes específicos
-mvn test -Dtest=ActivityTest
-mvn test -Dtest=StudentRegistrationUseCaseTest
+./gradlew test --tests ActivityTest
+./gradlew test --tests StudentRegistrationUseCaseTest
 
-# Com cobertura
-mvn jacoco:report
+# Com cobertura (executado automaticamente após os testes)
+./gradlew jacocoTestReport
 ```
 
 ## 📊 Dados Iniciais

@@ -59,16 +59,16 @@ Controllers return specific HTTP status codes:
 ### Development Environment
 
 1. **Database**: MongoDB required - use Docker: `docker run -d -p 27017:27017 --name mongodb mongo:latest`
-2. **Environment**: Always use Java 21 - set `JAVA_HOME` and use `mvn -version` to verify
+2. **Environment**: Always use Java 21 - set `JAVA_HOME` and use `./gradlew --version` to verify
 3. **Development Profile**: Set `SPRING_PROFILES_ACTIVE=dev` for CORS configuration
 
 ### Build & Test Commands
 
-- **Build**: `mvn clean install` (includes tests)
-- **Quick package**: `mvn package -DskipTests`
-- **Run application**: `mvn spring-boot:run`
-- **Test specific class**: `mvn test -Dtest=ActivityTest`
-- **Coverage report**: `mvn jacoco:report`
+- **Build**: `./gradlew clean build` (includes tests)
+- **Quick package**: `./gradlew bootJar`
+- **Run application**: `./gradlew bootRun`
+- **Test specific class**: `./gradlew test --tests ActivityTest`
+- **Coverage report**: `./gradlew jacocoTestReport` (auto-generated after tests)
 
 ### Database Migrations (Mongock)
 
