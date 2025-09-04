@@ -206,6 +206,8 @@ public class V001_InitialDatabaseSetup {
                                 ActivityType.COMMUNITY);
                 communityService.setParticipants(List.of("grace@mergington.edu", "aiden@mergington.edu"));
                 mongoTemplate.save(communityService);
+
+
         }
 
         private void seedTeachers() {
