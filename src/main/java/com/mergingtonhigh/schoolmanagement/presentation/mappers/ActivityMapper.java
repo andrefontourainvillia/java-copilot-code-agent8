@@ -34,6 +34,13 @@ public class ActivityMapper {
                     activity.getType().getTextColor());
         }
 
+        ActivityDTO.DifficultyLevelDTO difficultyLevelDTO = null;
+        if (activity.getDifficultyLevel() != null) {
+            difficultyLevelDTO = new ActivityDTO.DifficultyLevelDTO(
+                    activity.getDifficultyLevel().name().toLowerCase(),
+                    activity.getDifficultyLevel().getLabel());
+        }
+
         return new ActivityDTO(
                 activity.getName(),
                 activity.getDescription(),
@@ -42,6 +49,7 @@ public class ActivityMapper {
                 activity.getMaxParticipants(),
                 activity.getParticipants(),
                 activity.getCurrentParticipantCount(),
-                typeDTO);
+                typeDTO,
+                difficultyLevelDTO);
     }
 }
